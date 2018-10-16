@@ -61,6 +61,7 @@ import { isGitRepository } from '../git'
 import { ApplicationTheme } from '../../ui/lib/application-theme'
 import { TipState } from '../../models/tip'
 import { RepositoryStateCache } from '../stores/repository-state-cache'
+import { sameGitHubRemote } from '../remote-parsing'
 
 /**
  * An error handler function.
@@ -979,7 +980,7 @@ export class Dispatcher {
         if (!gitHubRepository) {
           return false
         }
-        return gitHubRepository.cloneURL === url
+        return sameGitHubRemote(gitHubRepository, url)
       } else {
         return false
       }
