@@ -1,3 +1,5 @@
+import { GitHubRepository } from '../models/github-repository'
+
 type Protocol = 'ssh' | 'https'
 
 interface IGitRemoteURL {
@@ -91,4 +93,30 @@ export function parseRepositoryIdentifier(
   }
 
   return null
+}
+
+/**
+ * Compare two GitHub-like URLs to see if they belong to the same repository.
+ *
+ * @param gitHubRepository canonical API details about the repository
+ * @param url A remote-like URL to verify against the existing information
+ */
+export function sameGitHubRemote(
+  gitHubRepository: GitHubRepository,
+  url: string
+): boolean {
+  if (gitHubRepository.cloneURL === null) {
+    return false
+  }
+
+  const firstIdentifier = parseRepositoryIdentifier(gitHubRepository.cloneURL)
+  const secondIdentifier = parseRepositoryIdentifier(url)
+
+  return (
+    firstIdentifier !== null &&
+    secondIdentifier !== null &&
+    firstIdentifier.hostname === secondIdentifier.hostname &&
+    firstIdentifier.owner === secondIdentifier.owner &&
+    firstIdentifier.name === secondIdentifier.name
+  )
 }
