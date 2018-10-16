@@ -156,7 +156,7 @@ describe('sameGitHubRemote', () => {
   it(`returns false when URL belongs to a different owner`, () => {
     expect(
       sameGitHubRemote(repository, 'https://github.com/outofambit/desktop.git')
-    ).is.true
+    ).is.false
   })
 
   it(`returns false if GitHub repository does't have a cloneURL set`, () => {
